@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quiz.DataStore;
 using Quiz.Entities;
+using Quiz.Enum;
 using Quiz.Services;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,22 @@ namespace Quiz.Services.Tests
     [TestClass()]
     public class QuestionServiceTests
     {
+        private QuestionStore questionStore;
+        private QuestionService questionService;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            questionStore = new QuestionStore();
+            questionService = new QuestionService(questionStore);
+        }
+
         // Check answer of question type is choice
         [TestMethod()]
         public void CheckAnwserChoiceTest()
         {
-            var questionStore = new QuestionStore();
-            var questionService = new QuestionService(questionStore);
+            // Arrange
             var questionId = 1;
-
-            // Answer 1
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
@@ -32,7 +40,6 @@ namespace Quiz.Services.Tests
                 }
             };
 
-            // Answer 2
             var answerOfUsers2 = new List<Answer>()
             {
                 new Answer()
@@ -64,10 +71,7 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
-            var questionStore = new QuestionStore();
-            var questionService = new QuestionService(questionStore);
             var questionId = 3;
-
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
@@ -118,10 +122,7 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
-            var questionStore = new QuestionStore();
-            var questionService = new QuestionService(questionStore);
             var questionId = 4;
-
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
@@ -171,8 +172,6 @@ namespace Quiz.Services.Tests
             // northern 2
 
             // Arrange
-            var questionStore = new QuestionStore();
-            var questionService = new QuestionService(questionStore);
             var questionId = 6;
 
             var answerOfUsers1 = new List<Answer>()

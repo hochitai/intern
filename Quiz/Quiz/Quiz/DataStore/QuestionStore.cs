@@ -202,24 +202,15 @@ namespace Quiz.DataStore
 
         public List<Answer> GetAnswers(int questionId, bool haveContent)
         {
-            return haveContent ?
-                (from answer in this.anwsers
-                where answer.QuestionId == questionId && answer.Result > 0
-                select new Answer()
-                {
-                    Id = answer.Id,
-                    Result = answer.Result,
-                    OptionType = answer.OptionType,
-                    Content = answer.Content,
-                }).ToList() :
-                (from answer in this.anwsers
-                where answer.QuestionId == questionId && answer.Result > 0
-                 select new Answer()
-                {
-                    Id = answer.Id,
-                    Result = answer.Result,
-                    OptionType = answer.OptionType
-                }).ToList();
+            return (from answer in this.anwsers
+                    where answer.QuestionId == questionId && answer.Result > 0
+                    select new Answer()
+                    {
+                        Id = answer.Id,
+                        Result = answer.Result,
+                        OptionType = answer.OptionType,
+                        Content = haveContent ? answer.Content : "",
+                    }).ToList();
         }
 
         public int GetTypeIdByQuestionId(int questionId)
