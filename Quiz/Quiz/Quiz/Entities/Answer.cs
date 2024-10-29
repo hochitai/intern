@@ -13,5 +13,19 @@ namespace Quiz.Entities
         public int QuestionId { get; set; }
         public int Result { get; set; }
         public string OptionType { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Answer other)
+            {
+                return this.Id == other.Id;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

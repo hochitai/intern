@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Quiz.DataStore;
 using Quiz.Entities;
 using Quiz.Services;
 using System;
@@ -18,38 +19,16 @@ namespace Quiz.Services.Tests
         [TestMethod()]
         public void CheckAnwserChoiceTest()
         {
-            // Example answer:
-            // Question: "What is the highest single score you can receive on a short answer response question?"
-            // 4 (true)
-            // 3
-            // 2
-            // 1
+            var questionStore = new QuestionStore();
+            var questionService = new QuestionService(questionStore);
+            var questionId = 1;
 
-            // Arrange
-            var question = new Question()
-            {
-                Id = 1,
-                TypeId = 1,
-                Content = "What is the highest single score you can receive on a short answer response question?"
-            };
-
-            var answers = new List<Answer>()
-            {
-                new Answer()
-                {
-                    Id = 1,
-                    QuestionId = 1,
-                    Content = "4"
-                }
-            };
             // Answer 1
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
                 {
                     Id = 1,
-                    QuestionId = 1,
-                    Content = "4"
                 }
             };
 
@@ -59,21 +38,19 @@ namespace Quiz.Services.Tests
                 new Answer()
                 {
                     Id = 2,
-                    QuestionId = 1,
-                    Content = "3"
                 }
             };
 
             // action
-            var result1 = QuestionService.CheckAnwser(question, answers, answerOfUsers1);
-            var result2 = QuestionService.CheckAnwser(question, answers, answerOfUsers2);
+            var result1 = questionService.CheckAnwser(questionId, answerOfUsers1);
+            var result2 = questionService.CheckAnwser(questionId, answerOfUsers2);
 
             // assert
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
 
         }
-
+        
         // Check answer of question type is multi choice
         [TestMethod()]
         public void CheckAnwserMultiChoiceTest()
@@ -87,45 +64,20 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
-            var question = new Question()
-            {
-                Id = 2,
-                TypeId = 2,
-                Content = "Which of the following are potential benefits\r\nof Artificial Intelligence (AI)?"
-            };
-
-        var answers = new List<Answer>()
-            {
-                new Answer()
-                {
-                    Id = 1,
-                    QuestionId = 2,
-                    Content = "Automation of repetitive tasks",
-                    Result = 1
-                },
-                new Answer()
-                {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
-                    Result = 1
-                }
-            };
+            var questionStore = new QuestionStore();
+            var questionService = new QuestionService(questionStore);
+            var questionId = 3;
 
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
                 {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
+                    Id= 7,
                     Result = 1
                 },
                 new Answer()
                 {
-                    Id = 1,
-                    QuestionId = 2,
-                    Content = "Automation of repetitive tasks",
+                    Id = 9,
                     Result = 1
                 },
             };
@@ -134,29 +86,25 @@ namespace Quiz.Services.Tests
             {
                 new Answer()
                 {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
+                    Id= 7,
                     Result = 1
                 },
                 new Answer()
                 {
-                    Id = 3,
-                    QuestionId = 2,
-                    Content = "Enhanced data security",
+                    Id = 8,
                     Result = 1
                 },
             };
 
             // Action
-            var result1 = QuestionService.CheckAnwser(question, answers, answerOfUsers1);
-            var result2 = QuestionService.CheckAnwser(question, answers, answerOfUsers2);
+            var result1 = questionService.CheckAnwser(questionId, answerOfUsers1);
+            var result2 = questionService.CheckAnwser(questionId, answerOfUsers2);
 
             // Assert
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
         }
-
+        
         // Check answer of question type is multi choice with order
         [TestMethod()]
         public void CheckAnwserMultiChoiceWithOrderTest()
@@ -170,45 +118,20 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
-            var question = new Question()
-            {
-                Id = 3,
-                TypeId = 3,
-                Content = "Which of the following are potential benefits\r\nof Artificial Intelligence (AI)?"
-            };
-
-            var answers = new List<Answer>()
-            {
-                new Answer()
-                {
-                    Id = 1,
-                    QuestionId = 2,
-                    Content = "Automation of repetitive tasks",
-                    Result = 1
-                },
-                new Answer()
-                {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
-                    Result = 2
-                }
-            };
+            var questionStore = new QuestionStore();
+            var questionService = new QuestionService(questionStore);
+            var questionId = 4;
 
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
                 {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
+                    Id= 12,
                     Result = 2
                 },
                 new Answer()
                 {
-                    Id = 1,
-                    QuestionId = 2,
-                    Content = "Automation of repetitive tasks",
+                    Id = 11,
                     Result = 1
                 },
             };
@@ -217,29 +140,25 @@ namespace Quiz.Services.Tests
             {
                 new Answer()
                 {
-                    Id= 2,
-                    QuestionId= 2,
-                    Content = "Improved decision-making",
+                    Id= 12,
                     Result = 2
                 },
                 new Answer()
                 {
-                    Id = 3,
-                    QuestionId = 2,
-                    Content = "Enhanced data security",
-                    Result = 3
+                    Id = 13,
+                    Result = 1
                 },
             };
 
             // Action
-            var result1 = QuestionService.CheckAnwser(question, answers, answerOfUsers1);
-            var result2 = QuestionService.CheckAnwser(question, answers, answerOfUsers2);
+            var result1 = questionService.CheckAnwser(questionId, answerOfUsers1);
+            var result2 = questionService.CheckAnwser(questionId, answerOfUsers2);
 
             // Assert
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
         }
-
+        
         // Check answer of question type is writing
         [TestMethod()]
         public void CheckAnwserWrittingTest()
@@ -252,62 +171,21 @@ namespace Quiz.Services.Tests
             // northern 2
 
             // Arrange
-            var question = new Question()
-            {
-                Id = 4,
-                TypeId = 4,
-                Content = "The whole country was ______ with forests and swamps. The ______  part of it was very misty and cold."
-            };
-
-            var answers = new List<Answer>()
-            {
-                new Answer()
-                {
-                    Id = 1,
-                    QuestionId = 4,
-                    Content = "surrounded",
-                    Result = 1,
-                    OptionType = "2InM"
-                },
-                new Answer()
-                {
-                    Id = 2,
-                    QuestionId = 4,
-                    Content = "covered",
-                    Result = 1,
-                    OptionType = "2InM"
-                },
-                new Answer()
-                {
-                    Id = 3,
-                    QuestionId = 4,
-                    Content = "greater",
-                    Result = 2,
-                    OptionType = "2InM"
-                },
-                new Answer()
-                {
-                    Id = 4,
-                    QuestionId = 4,
-                    Content = "northern",
-                    Result = 2,
-                    OptionType = "2InM"
-                },
-            };
+            var questionStore = new QuestionStore();
+            var questionService = new QuestionService(questionStore);
+            var questionId = 6;
 
             var answerOfUsers1 = new List<Answer>()
             {
                 new Answer()
                 {
-                    QuestionId = 4,
-                    Content = "surrounded",
+                    Content = "Inherite",
                     Result = 1,
                     OptionType = "2InM"
                 },
                 new Answer()
                 {
-                    QuestionId = 4,
-                    Content = "greater",
+                    Content = "Override",
                     Result = 2,
                     OptionType = "2InM"
                 },
@@ -317,15 +195,13 @@ namespace Quiz.Services.Tests
             {
                 new Answer()
                 {
-                    QuestionId = 4,
-                    Content = "surrounded",
+                    Content = "Inherite",
                     Result = 2,
                     OptionType = "2InM"
                 },
                 new Answer()
                 {
-                    QuestionId = 4,
-                    Content = "greater",
+                    Content = "Override",
                     Result = 1,
                     OptionType = "2InM"
                 },
@@ -335,23 +211,22 @@ namespace Quiz.Services.Tests
             {
                 new Answer()
                 {
-                    QuestionId = 4,
-                    Content = "greater",
+                    Content = "Override",
                     Result = 2,
                     OptionType = "2InM"
                 }
             };
 
             // Action
-            var result1 = QuestionService.CheckAnwser(question, answers, answerOfUsers1);
-            var result2 = QuestionService.CheckAnwser(question, answers, answerOfUsers2);
-            var result3 = QuestionService.CheckAnwser(question, answers, answerOfUsers3);
+            var result1 = questionService.CheckAnwser(questionId, answerOfUsers1);
+            var result2 = questionService.CheckAnwser(questionId, answerOfUsers2);
+            var result3 = questionService.CheckAnwser(questionId, answerOfUsers3);
 
             // Assert
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
             Assert.IsFalse(result3);
         }
-
+        
     }
 }

@@ -3,6 +3,7 @@ using Quiz.Entities;
 using Quiz.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -23,49 +24,38 @@ namespace Quiz.Services
         public bool CheckAnwser(int questionId, List<Answer> answersOfUser)
         {
             var typeOfQuestion = _questionStore.GetTypeIdByQuestionId(questionId);
+            var trueAnswerList = _questionStore.GetAnswers(questionId, HaveContent(typeOfQuestion));
 
-            List<Answer> trueAnswerList;
-            bool haveContent = false;
+            return (typeOfQuestion == (int)QuestionTypeEnum.Wrtting) ?
+                CheckWritingAnswer(answersOfUser, trueAnswerList) :
+                CheckChoiceAnswer(answersOfUser, trueAnswerList);
+        }
 
-            if (typeOfQuestion == (int) QuestionTypeEnum.Wrtting) 
-            {
-                haveContent = true;
-                
-                trueAnswerList = _questionStore.GetAnswers(questionId, haveContent);
+        private bool HaveContent(int typeOfQuestion)
+        {
+            return typeOfQuestion == (int) QuestionTypeEnum.Wrtting;
+        }
 
-                var trueAnswerNeedCount = int.Parse(trueAnswerList.First().OptionType[0].ToString()); // ex: 2InM
+        public bool CheckChoiceAnswer(List<Answer> answersOfUser, List<Answer> trueAnswerList)
+        {
+            return trueAnswerList.Count() == answersOfUser.Count() && answersOfUser.All(answer => trueAnswerList.Contains(answer));
+        }
 
-                if (trueAnswerNeedCount != answersOfUser.Count()) { return false; }
+        public bool CheckWritingAnswer(List<Answer> answersOfUser, List<Answer> trueAnswerList)
+        {
+            int trueAnswerNeedCount = GetTrueAnswerNeedCount(trueAnswerList); // ex: 2InM
 
-                foreach (var answer in answersOfUser) 
-                { 
-                    bool existed = false;
-                    foreach (var trueAnswer in trueAnswerList)
-                    {
-                        if (String.Equals(answer.Content, trueAnswer.Content) && answer.Result == trueAnswer.Result)
-                        {
-                            existed = true;
-                            break;
-                        }
-                    }
-                    if (!existed) { return false; }
-                }
-            } else
-            {
-                trueAnswerList = _questionStore.GetAnswers(questionId, haveContent);
+            return trueAnswerNeedCount == answersOfUser.Count() && answersOfUser.All(answer =>
+                trueAnswerList.Any(trueAnswer =>
+                    string.Equals(answer.Content, trueAnswer.Content, StringComparison.OrdinalIgnoreCase)
+                    && answer.Result == trueAnswer.Result
+                )
+            );
+        }
 
-                if (trueAnswerList.Count() != answersOfUser.Count()) { return false; }
-
-                foreach (var answer in answersOfUser)
-                {
-                    if (!trueAnswerList.Contains(answer))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-
+        private int GetTrueAnswerNeedCount(List<Answer> trueAnswerList)
+        {
+            return int.Parse(trueAnswerList.First().OptionType[0].ToString());
         }
     }
 
