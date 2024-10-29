@@ -52,7 +52,6 @@ namespace Quiz.Services
                 )
             );
         }
-
         private int GetTrueAnswerNeedCount(List<Answer> trueAnswerList)
         {
             return int.Parse(trueAnswerList.First().OptionType[0].ToString());

@@ -12,6 +12,8 @@ namespace Quiz.Entities
         public int QuizQuestionId {  get; set; }
         public int UserId { get; set; }
         public int AnswerId { get; set; }
+        public string Content { get; set; }
         public int Score { get; set; }
+        public int Result { get; set; }
     }
 }
