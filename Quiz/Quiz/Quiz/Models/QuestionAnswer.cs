@@ -11,8 +11,5 @@ namespace Quiz.Models
     {
         public int QuestionId { get; set; }
         public List<Answer> Answers { get; set; }
-        public bool Result { get; set; }
-        public int Score { get; set; }
-
     }
 }

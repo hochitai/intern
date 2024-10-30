@@ -219,7 +219,20 @@ namespace Quiz.DataStore
                     where question.Id == questionId
                     select question.TypeId).First();
         }
+
+        public bool AddQuestion(Question question)
+        {
+            questions.Add(question);
+            return true;
+        }
+
+        public bool AddAnswers(List<Answer> nAnswers)
+        {
+            foreach (Answer answer in nAnswers)
+            {
+                this.anwsers.Add(answer);
+            }
+            return true;
+        }
     }
-
-
 }

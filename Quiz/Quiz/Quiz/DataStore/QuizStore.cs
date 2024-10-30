@@ -10,7 +10,7 @@ namespace Quiz.DataStore
 {
     public class QuizStore
     {
-        List<Entities.Quiz> quizs  = new List<Entities.Quiz>
+        private List<Entities.Quiz> quizs = new List<Entities.Quiz>
         {
             new Entities.Quiz()
             {
@@ -21,7 +21,7 @@ namespace Quiz.DataStore
             }
         };
 
-        List<QuizQuestion> quizQuestions = new List<QuizQuestion>()
+        private List<QuizQuestion> quizQuestions = new List<QuizQuestion>()
         {
             new QuizQuestion()
             {
@@ -39,16 +39,46 @@ namespace Quiz.DataStore
             },
         };
 
-        List<QuizUser> quizUsers = [];
+        private List<QuizUser> quizUsers = [];
 
-        public void AddAnswerOfUser(int quizId, QuestionAnswer qAnswer, int score, bool isCorrect)
+        public bool AddQuiz(Entities.Quiz quiz)
         {
-           
+            quizs.Add(quiz);
+            return true;
         }
 
-        public int GetScore(int quizId, int userId)
+        public bool AddAnswerOfUser(int quizId, int userId, QuestionAnswer qAnswer, int score, bool isCorrect)
         {
-            return quizUsers.Where(qu => qu.Id == quizId && qu.UserId == userId).Sum(qu => qu.Score);
+            foreach (var answer in qAnswer.Answers)
+            {
+                quizUsers.Add(new QuizUser()
+                {
+                    QuizQuestionId = GetQuizQuestionId(quizId, qAnswer.QuestionId),
+                    Score = score,
+                    UserId = userId,
+                    AnswerId = answer.Id,
+                    Content =  answer.Content ?? "",
+                    Result = isCorrect
+                });
+            }
+            return true;
+        }
+
+        private int GetQuizQuestionId(int quizId, int questionId)
+        {
+            return quizQuestions.Find(qq => qq.QuizId == quizId && qq.QuestionId == questionId).Id;
+        }
+
+        public int GetScoreOfUser(int quizUser, int userId)
+        {
+            return quizUsers.Where(qu => qu.Id == quizUser && qu.UserId == userId)
+                 .Join(quizQuestions, qu => qu.QuizQuestionId, qq => qq.Id, (qu, qq) => qu)   
+                .Sum(qu => qu.Score);
+        }
+
+        public int GetScoreOfQuestion(int quizId, int questionId)
+        {
+            return quizQuestions.Find(qu => qu.QuizId == quizId && qu.QuestionId == questionId).Score;
         }
     }
 }

@@ -19,18 +19,32 @@ namespace Quiz.Services
             this.questionService = questionService;
         }
 
-        public void SubmitQuiz(int quizId, List<QuestionAnswer> questionAnswers)
+        public bool AddQuiz(Entities.Quiz quiz)
         {
+            return quizStore.AddQuiz(quiz);
+        }
+
+        public bool SubmitQuiz(int quizId, int userId, List<QuestionAnswer> questionAnswers)
+        {
+            int score;
+            bool isCorrect;
             foreach (QuestionAnswer qAnswer in questionAnswers) {
-                quizStore.AddAnswerOfUser(quizId, qAnswer,
-                    qAnswer.Score,
-                    questionService.CheckAnwser(qAnswer.QuestionId, qAnswer.Answers));
+                score = quizStore.GetScoreOfQuestion(quizId, qAnswer.QuestionId);
+                isCorrect = questionService.CheckAnwser(qAnswer.QuestionId, qAnswer.Answers);
+                quizStore.AddAnswerOfUser(
+                    quizId,
+                    userId,
+                    qAnswer,
+                    score,
+                    isCorrect
+                );
             }
+            return true;
         }
         
-        public int GetScore(int quizId, int userId)
+        public int GetScoreOfUser(int quizId, int userId)
         {
-            return quizStore.GetScore(quizId, userId);
+            return quizStore.GetScoreOfUser(quizId, userId);
         }
 
     }

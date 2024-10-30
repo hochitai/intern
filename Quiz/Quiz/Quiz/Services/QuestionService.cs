@@ -21,6 +21,16 @@ namespace Quiz.Services
             _questionStore = questionStore;
         }
 
+        public bool AddQuestion(Question question)
+        {
+            return _questionStore.AddQuestion(question);
+        }
+
+        public bool AddAnswers(List<Answer> answers)
+        {
+            return _questionStore.AddAnswers(answers);
+        }
+
         public bool CheckAnwser(int questionId, List<Answer> answersOfUser)
         {
             var typeOfQuestion = _questionStore.GetTypeIdByQuestionId(questionId);
@@ -56,6 +66,7 @@ namespace Quiz.Services
         {
             return int.Parse(trueAnswerList.First().OptionType[0].ToString());
         }
+
     }
 
 }
