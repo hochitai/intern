@@ -80,5 +80,22 @@ namespace Quiz.DataStore
         {
             return quizQuestions.Find(qu => qu.QuizId == quizId && qu.QuestionId == questionId).Score;
         }
+
+        internal bool AddQuestion(int quizId, QuizQuestion quizQuestion)
+        {
+            quizQuestion.QuizId = quizId;
+            quizQuestions.Add(quizQuestion);
+            return true;
+        }
+
+        internal List<QuizQuestion> GetQuizQuestionByQuizId(int quizId)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal List<Entities.Quiz> GetQuizsByUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -20,15 +20,34 @@ namespace Quiz.Services
         {
             _questionStore = questionStore;
         }
+        public List<Question> GetQuestionsByLevelId(int levelId)
+        {
+            return _questionStore.GetQuestionsByLevelId(levelId);
+        }
+
+        public List<Question> GetQuestionsByTagId(int tagId)
+        {
+            return _questionStore.GetQuestionsByTagId(tagId);
+        }
+
+        public List<Answer> GetAnswersByQuestionId(int questionId) 
+        {
+            return _questionStore.GetAnswers(questionId, true);
+        }
 
         public bool AddQuestion(Question question)
         {
             return _questionStore.AddQuestion(question);
         }
 
-        public bool AddAnswers(List<Answer> answers)
+        public bool AddAnswers(int questionId, List<Answer> answers)
         {
-            return _questionStore.AddAnswers(answers);
+            foreach (Answer answer in answers)
+            {
+                var result = _questionStore.AddAnswers(questionId, answer);
+                if (!result) return false;
+            }
+            return true;
         }
 
         public bool CheckAnwser(int questionId, List<Answer> answersOfUser)
@@ -36,9 +55,13 @@ namespace Quiz.Services
             var typeOfQuestion = _questionStore.GetTypeIdByQuestionId(questionId);
             var trueAnswerList = _questionStore.GetAnswers(questionId, HaveContent(typeOfQuestion));
 
-            return (typeOfQuestion == (int)QuestionTypeEnum.Wrtting) ?
-                CheckWritingAnswer(answersOfUser, trueAnswerList) :
-                CheckChoiceAnswer(answersOfUser, trueAnswerList);
+            if (typeOfQuestion == (int)QuestionTypeEnum.Wrtting)
+            {
+                return CheckWritingAnswer(answersOfUser, trueAnswerList);
+            }
+
+            return CheckChoiceAnswer(answersOfUser, trueAnswerList);
+
         }
 
         private bool HaveContent(int typeOfQuestion)

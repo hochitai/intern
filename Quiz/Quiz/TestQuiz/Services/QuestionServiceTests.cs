@@ -31,6 +31,7 @@ namespace Quiz.Services.Tests
         public void CheckAnwserChoiceTest()
         {
             // Arrange
+            // question id of question type is choice in store
             var questionId = 1;
             var answerOfUsers1 = new List<Answer>()
             {
@@ -71,6 +72,7 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
+            // question id of question type is multi choice in store
             var questionId = 3;
             var answerOfUsers1 = new List<Answer>()
             {
@@ -122,6 +124,7 @@ namespace Quiz.Services.Tests
             // E. Reduction of employment opportunities
 
             // Arrange
+            // question id of question type is multi choice with order in store
             var questionId = 4;
             var answerOfUsers1 = new List<Answer>()
             {
@@ -172,6 +175,7 @@ namespace Quiz.Services.Tests
             // northern 2
 
             // Arrange
+            // question id of question type is writting in store
             var questionId = 6;
 
             var answerOfUsers1 = new List<Answer>()

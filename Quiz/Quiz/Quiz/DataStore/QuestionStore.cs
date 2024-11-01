@@ -226,13 +226,21 @@ namespace Quiz.DataStore
             return true;
         }
 
-        public bool AddAnswers(List<Answer> nAnswers)
+        public bool AddAnswers(int questionId, Answer nAnswer)
         {
-            foreach (Answer answer in nAnswers)
-            {
-                this.anwsers.Add(answer);
-            }
+            nAnswer.Id = questionId;
+            this.anwsers.Add(nAnswer);
             return true;
+        }
+
+        internal List<Question> GetQuestionsByLevelId(int levelId)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal List<Question> GetQuestionsByTagId(int tagId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
