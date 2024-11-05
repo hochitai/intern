@@ -58,7 +58,7 @@ namespace Quiz.Services.Tests
             Assert.IsFalse(result2);
 
         }
-        
+
         // Check answer of question type is multi choice
         [TestMethod()]
         public void CheckAnwserMultiChoiceTest()
@@ -110,7 +110,7 @@ namespace Quiz.Services.Tests
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
         }
-        
+
         // Check answer of question type is multi choice with order
         [TestMethod()]
         public void CheckAnwserMultiChoiceWithOrderTest()
@@ -162,7 +162,7 @@ namespace Quiz.Services.Tests
             Assert.IsTrue(result1);
             Assert.IsFalse(result2);
         }
-        
+
         // Check answer of question type is writing
         [TestMethod()]
         public void CheckAnwserWrittingTest()
@@ -230,6 +230,103 @@ namespace Quiz.Services.Tests
             Assert.IsFalse(result2);
             Assert.IsFalse(result3);
         }
-        
+
+        [TestMethod()]
+        public void CheckChoiceAnswerTest()
+        {
+            // Arrange
+            var answerOfUsers1 = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Id = 1,
+                }
+            };
+
+            var answerOfUsers2 = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Id = 2,
+                }
+            };
+
+            var trueAnswers = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Id = 1,
+                }
+            };
+
+            // Action
+            var result1 = questionService.CheckChoiceAnswer(answerOfUsers1, trueAnswers);
+            var result2 = questionService.CheckChoiceAnswer(answerOfUsers2, trueAnswers);
+
+            // Assert
+            Assert.IsTrue(result1);
+            Assert.IsFalse(result2);
+        }
+
+        [TestMethod()]
+        public void CheckChoiceAnswer2Test()
+        {
+            // Arrange
+            var answerOfUsers1 = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Content = "Inherite",
+                    Result = 1,
+                    OptionType = "2InM"
+                },
+                new Answer()
+                {
+                    Content = "Override",
+                    Result = 2,
+                    OptionType = "2InM"
+                },
+            };
+
+            var answerOfUsers2 = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Content = "Inherite",
+                    Result = 2,
+                    OptionType = "2InM"
+                },
+                new Answer()
+                {
+                    Content = "Override",
+                    Result = 1,
+                    OptionType = "2InM"
+                },
+            };
+
+            var trueAnswers = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Content = "Inherite",
+                    Result = 1,
+                    OptionType = "2InM"
+                },
+                new Answer()
+                {
+                    Content = "Override",
+                    Result = 2,
+                    OptionType = "2InM"
+                },
+            };
+
+            // Action
+            var result1 = questionService.CheckWritingAnswer(answerOfUsers1, trueAnswers);
+            var result2 = questionService.CheckWritingAnswer(answerOfUsers2, trueAnswers);
+
+            // Assert
+            Assert.IsTrue(result1);
+            Assert.IsFalse(result2);
+        }
     }
 }
